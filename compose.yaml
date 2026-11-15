@@ -1,0 +1,30 @@
+# Windows VM running inside a Docker container (QEMU/KVM), see https://github.com/dockur/windows
+services:
+  windows:
+    image: dockurr/windows:6.06
+    container_name: windows
+    environment:
+      VERSION: ${WIN_VERSION:-11}
+      LANGUAGE: ${WIN_LANGUAGE:-French}
+      REGION: ${WIN_REGION:-fr-FR}
+      KEYBOARD: ${WIN_KEYBOARD:-fr-FR}
+      RAM_SIZE: ${WIN_RAM:-8G}
+      CPU_CORES: ${WIN_CPUS:-4}
+      DISK_SIZE: ${WIN_DISK:-64G}
+      USERNAME: ${WIN_USER:-user}
+      PASSWORD: ${WIN_PASSWORD:-changeme}
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      # Local access only: web viewer and RDP
+      - 127.0.0.1:8006:8006
+      - 127.0.0.1:3389:3389/tcp
+      - 127.0.0.1:3389:3389/udp
+    volumes:
+      - ./storage:/storage
+      - ./shared:/shared
+    restart: unless-stopped
+    stop_grace_period: 2m
