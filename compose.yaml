@@ -13,9 +13,12 @@ services:
       DISK_SIZE: ${WIN_DISK:-64G}
       USERNAME: ${WIN_USER:-user}
       PASSWORD: ${WIN_PASSWORD:-changeme}
+      # Extra QEMU arguments, e.g. USB passthrough (see .env.example)
+      ARGUMENTS: ${WIN_ARGUMENTS:-}
     devices:
       - /dev/kvm
       - /dev/net/tun
+      - /dev/bus/usb
     cap_add:
       - NET_ADMIN
     ports:

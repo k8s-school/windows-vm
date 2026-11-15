@@ -25,6 +25,18 @@ Then open <http://localhost:8006> (web viewer), or connect via RDP on `localhost
 - `./shared` is visible in Windows as a network share (`\\host.lan\Data`)
 - Ports are bound to `127.0.0.1` only
 
+## USB passthrough
+
+To use a USB device in Windows (e.g. a guitar pedal with its vendor editor), get its IDs with `lsusb`
+(`ID 3703:2000 NUX NUX MG-50`) and set in `.env`:
+
+```bash
+WIN_ARGUMENTS=-device usb-host,vendorid=0x3703,productid=0x2000
+```
+
+Then restart the VM (`make down && make up`). The device must be plugged in before starting the VM,
+and it is not available on Linux while the VM runs.
+
 ## Windows license
 
 No Windows license is required:
